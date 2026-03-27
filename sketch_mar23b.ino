@@ -1,0 +1,36 @@
+// --- أطراف التوصيل ---
+const int relayPin = 14; // الريلاي
+const int ldrPin = 34;   // حساس الإضاءة الديجيتال (DO)
+
+void setup() {
+  // تشغيل شاشة السيريال بسرعة 9600 عشان الرموز تظهر واضحة
+  Serial.begin(9600);
+  
+  // تعريف الأطراف
+  pinMode(ldrPin, INPUT);
+  pinMode(relayPin, OUTPUT);
+  
+  // التأكد إن اللمبة (الريلاي) مطفية في البداية
+  digitalWrite(relayPin, LOW); 
+
+  Serial.println("System Started! (LDR Only Mode)");
+}
+
+void loop() {
+  // قراءة حالة حساس الإضاءة بس 
+  int isDark = digitalRead(ldrPin); 
+
+  // طباعة القراءة على الشاشة 
+  Serial.print("LDR (0 = Dark, 1 = Light): ");
+  Serial.println(isDark);
+
+  // الشرط: لو الدنيا ضلمة (LOW)
+  if (isDark == LOW) {
+    digitalWrite(relayPin, HIGH); // تشغيل الريلاي (اللمبة تنور)
+  } else {
+    digitalWrite(relayPin, LOW);  // إيقاف الريلاي (اللمبة تطفي)
+  }
+  
+  // تأخير بسيط عشان الشاشة
+  delay(500); 
+}
